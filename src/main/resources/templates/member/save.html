@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        function idDuplicate(){
+            const id=document.getElementById("memberEmail").value;
+            console.log(id);
+            const checkResult=document.getElementById("id-dup-check");
+
+            $.ajax({
+                type : 'post',
+                url : '/member/idDuplicate',
+                data : {"id":id},
+                dataType : "text",
+                success : function(result){
+                    if(result=="ok"){
+                        checkResult.style.color = 'green';
+                        checkResult.innerHTML='멋진아이디네요!!';
+                    }
+                    else{
+                        checkResult.style.color = 'red';
+                        checkResult.innerHTML='이미 사용중인 아이디입니다.';
+                    }
+                },
+                error : function (){
+                    alert("실패");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<form action="/member/save" method="post" enctype="multipart/form-data">
+    <input type="text" name="memberEmail" id="memberEmail" placeholder="email" onblur="idDuplicate()">
+    <span id="id-dup-check"></span><br>
+    <input type="text" name="memberPassword" placeholder="password">
+    <input type="text" name="memberName" placeholder="name">
+    <input type="text" name="memberPhone" placeholder="phone">
+    <input type="file" name="memberFile">
+    <input type="submit" value="회원가입">
+</form>
+</body>
+</html>
